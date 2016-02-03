@@ -1,0 +1,18 @@
+{
+  "name": "sebastienheyd/hidden-captcha",
+  "description": "Add a hidden captcha to Laravel",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Sebastien HEYD",
+      "email": "sebastien.heyd@free.fr"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SebastienHeyd\\HiddenCaptcha\\": "src/"
+    }
+  },
+  "minimum-stability": "dev",
+  "require": {}
+}
