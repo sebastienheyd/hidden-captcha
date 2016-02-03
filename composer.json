@@ -1,11 +1,12 @@
 {
   "name": "sebastienheyd/hidden-captcha",
-  "description": "Add a hidden captcha to Laravel",
+  "description": "Hidden captcha for Laravel 5",
+  "keywords": ["laravel", "captcha"],
   "license": "MIT",
   "authors": [
     {
       "name": "Sebastien HEYD",
-      "email": "sebastien.heyd@free.fr"
+      "email": "contact@sheyd.fr"
     }
   ],
   "autoload": {
@@ -14,5 +15,10 @@
     }
   },
   "minimum-stability": "dev",
-  "require": {}
+  "require": {},
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0-dev"
+    }
+  }
 }
