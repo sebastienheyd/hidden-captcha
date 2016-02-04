@@ -1,5 +1,6 @@
 <?php namespace SebastienHeyd\HiddenCaptcha;
 
+use Illuminate\Validation\Validator;
 use Request;
 use Crypt;
 
@@ -32,7 +33,7 @@ class HiddenCaptcha
             'session_id' => session_id(),
             'ip' => Request::ip(),
             'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-            'hfield_name' => $name
+            'random_field_name' => $name
         );
 
         // Encrypt the token
@@ -58,17 +59,17 @@ class HiddenCaptcha
      * @param integer $maxLimit [optional] Submission maximum time limit in seconds (default = 1200)
      * @return boolean
      */
-    public static function check($values, $minLimit = 0, $maxLimit = 1200)
+    public static function check($values, $minLimit = 0, $maxLimit = 1200, Validator $validator)
     {
         // Check post values
         if ($values === null || !isset($values['token']) || !isset($values['name'])) {
-            self::$_error = self::$CAPTCHA_VALUES_NOT_SUBMITTED;
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.novalues')]);
             return false;
         }
 
         // Hidden field is set
         if ($values['name'] !== '') {
-            self::$_error = self::$CAPTCHA_SPAMBOT_AUTO_FILL;
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.autofill')]);
             return false;
         }
 
@@ -78,27 +79,26 @@ class HiddenCaptcha
 
         // Token is null or unserializable
         if (!$token || !is_array($token) || empty($token)) {
-            self::$_error = self::$CAPTCHA_TOKEN_ERROR;
-            return false;
-        }
-
-        // Check the random posted field
-        $hField = $values[$token['hfield_name']];
-        if (!isset($token['captcha']) && (!isset($hField) || $hField === '')) {
-            self::$_error = self::$CAPTCHA_VALUES_NOT_SUBMITTED;
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.token')]);
             return false;
         }
 
         // Check time limits
         $now = time();
         if ($now - $token['timestamp'] < $minLimit || $now - $token['timestamp'] > $maxLimit) {
-            self::$_error = self::$CAPTCHA_TIME_LIMIT_ERROR;
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.time_limit')]);
             return false;
         }
 
+        // Check the random posted field
+        if (!isset($values[$token['random_field_name']])) {
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.random_field')]);
+        }
+        
         // Check if the random field value is similar to the token value
-        if (!ctype_digit($hField) || $token['timestamp'] != $hField) {
-            self::$_error = self::$CAPTCHA_HFIELD_ERROR;
+        $randomField = $values[$token['random_field_name']];
+        if (!ctype_digit($randomField) || $token['timestamp'] != $randomField) {
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.random_field_value')]);
             return false;
         }
 
@@ -108,21 +108,11 @@ class HiddenCaptcha
             $token['ip'] !== Request::ip() &&
             $token['user_agent'] !== $_SERVER['HTTP_USER_AGENT']
         ) {
-            self::$_error = self::$CAPTCHA_TOKEN_ERROR;
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.invalid_token')]);
             return false;
         }
 
         // everything is ok, return true
         return true;
-    }
-
-    /**
-     * Get the error code
-     *
-     * @return integer
-     */
-    public function getError()
-    {
-        return $this->error;
     }
 }

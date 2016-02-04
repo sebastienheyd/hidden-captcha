@@ -12,7 +12,10 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app['validator']->extend('hiddencaptcha', function ($attribute, $value, $parameters, $validator) {
-            return HiddenCaptcha::check($validator->getData()[$attribute]);
+            $this->loadTranslationsFrom(__DIR__ . '/lang', 'hiddencaptcha');
+            $minLimit = (isset($parameters[0]) && is_numeric($parameters[0])) ? $parameters[0] : 0;
+            $maxLimit = (isset($parameters[1]) && is_numeric($parameters[1])) ? $parameters[1] : 1200;
+            return HiddenCaptcha::check($validator->getData()[$attribute], $minLimit, $maxLimit, $validator);
         });
     }
 
