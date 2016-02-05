@@ -13,7 +13,7 @@ Hidden captcha will use 4 checks to stop spam robots :
 
 ## Does it work in all cases ?
 
-No, this solution can be bypassed with curl. Curl can get the fields values simply by reading it and can post them after that. 
+No, this solution can be bypassed with curl. Curl can get the fields values simply by reading it and can post them after that.
 A spammer who want to send you spams will be able to do that by writing a simple script (or really post the data ;) ), but this solution will stop a large majority of spam bots.
 
 ## Installation
@@ -61,3 +61,28 @@ $rules = [
     'hcptch' => 'required|hiddencaptcha',
 ];
 ```
+
+## Options
+
+#### Changing fields name
+
+You can change the generated fields name, for that just change the value when you call render, per example : `{{ HiddenCaptcha::render('my-hidden-captcha') }}`.
+
+Will render something like this :
+```html
+<input type="hidden" name="my-hidden-captcha['token']" ...>
+```
+
+To work, you need to use the same name in the rules array :
+
+`$rules = ['my-hidden-captcha' => 'required|hiddencaptcha'];`
+
+By default, the name is `hcptch`.
+
+#### Changing the time limits
+
+You can change the time limit for submitting the form. By default, the minimum time is 0 seconds and the maximum is 1200 seconds (10 minutes).
+
+For that you can define the parameters into the rules array (here min=5 and max=2400) :
+
+`$rules = ['my-hidden-captcha' => 'required|hiddencaptcha:5,2400'];`
