@@ -62,19 +62,25 @@ class HiddenCaptcha
     public static function check($values, $minLimit = 0, $maxLimit = 1200, Validator $validator)
     {
         // Check post values
-        if ($values === null || !isset($values['token']) || !isset($values['name'])) {
+        if ($values === null || !isset($values['token']) || !array_key_exists('name', $values)) {
             $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.novalues')]);
             return false;
         }
 
         // Hidden field is set
-        if ($values['name'] !== '') {
+        if (!empty($values['name'])) {
             $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.autofill')]);
             return false;
         }
 
         // Get the token values
-        $token = Crypt::decrypt($values['token']);
+        try {
+            $token = Crypt::decrypt($values['token']);
+        } catch (\Exception $exception) {
+            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.token')]);
+            return false;
+        }
+
         $token = @unserialize($token);
 
         // Token is null or unserializable
@@ -93,8 +99,9 @@ class HiddenCaptcha
         // Check the random posted field
         if (!isset($values[$token['random_field_name']])) {
             $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.random_field')]);
+            return false;
         }
-        
+
         // Check if the random field value is similar to the token value
         $randomField = $values[$token['random_field_name']];
         if (!ctype_digit($randomField) || $token['timestamp'] != $randomField) {
