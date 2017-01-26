@@ -26,9 +26,7 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app['hiddencaptcha'] = $this->app->share(function () {
-            return new HiddenCaptcha();
-        });
+        $this->app->bind('hiddencaptcha', 'SebastienHeyd\HiddenCaptcha\HiddenCaptcha');
     }
 
     /**
@@ -38,6 +36,6 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array('hiddencaptcha');
+        return ['hiddencaptcha'];
     }
 }
