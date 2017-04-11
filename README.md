@@ -1,5 +1,11 @@
 # Hidden captcha for Laravel 5
 
+![Package](https://img.shields.io/badge/Package-sebastienheyd%2Fhidden--captcha-yellowgreen.svg)
+![Laravel](https://img.shields.io/badge/For-Laravel%205.x-yellow.svg)
+![Release](https://img.shields.io/github/release/sebastienheyd/hidden-captcha.svg)
+![Packagist](https://img.shields.io/packagist/v/sebastienheyd/hidden-captcha.svg)
+![License](https://img.shields.io/github/license/sebastienheyd/hidden-captcha.svg)
+
 Spam protection solution for Laravel 5.x. Based on multiple strategies to provide a better user experience.
 
 ## How does it work?
