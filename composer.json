@@ -1,7 +1,10 @@
 {
   "name": "sebastienheyd/hidden-captcha",
   "description": "Hidden captcha for Laravel 5",
-  "keywords": ["laravel", "captcha"],
+  "keywords": [
+    "laravel",
+    "captcha"
+  ],
   "license": "MIT",
   "authors": [
     {
@@ -15,5 +18,17 @@
     }
   },
   "minimum-stability": "dev",
-  "require": {}
+  "require": {
+    "illuminate/support": "5.5.*",
+  },
+  "extra": {
+    "laravel": {
+      "aliases": {
+        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facades\\HiddenCaptcha"
+      },
+      "providers": [
+        "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
+      ]
+    }
+  }
 }
