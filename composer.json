@@ -16,7 +16,8 @@
   },
   "minimum-stability": "dev",
   "require": {
-    "illuminate/support": "^5.5",
+    "php" : ">=5.6.0",
+    "illuminate/support": "^5.5"
   },
   "extra": {
     "laravel": {
