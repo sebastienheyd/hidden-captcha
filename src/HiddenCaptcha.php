@@ -1,4 +1,6 @@
-<?php namespace SebastienHeyd\HiddenCaptcha;
+<?php
+
+namespace SebastienHeyd\HiddenCaptcha;
 
 use Illuminate\Validation\Validator;
 use Request;
@@ -6,78 +8,63 @@ use Crypt;
 
 class HiddenCaptcha
 {
-    private static $_error = false;
-
-    // Errors code
-    static $CAPTCHA_IMAGE_ERROR = 10;
-    static $CAPTCHA_TIME_LIMIT_ERROR = 20;
-    static $CAPTCHA_SPAMBOT_AUTO_FILL = 30;
-    static $CAPTCHA_HFIELD_ERROR = 40;
-    static $CAPTCHA_TOKEN_ERROR = 50;
-    static $CAPTCHA_VALUES_NOT_SUBMITTED = 60;
-
     /**
      * Set the hidden captcha tags to put in your form
      *
-     * @param string $formId [optional] The id to use to generate input elements (default = "hcptch")
+     * @param string $mustBeEmptyField
      * @return string
      */
-    public static function render($formId = 'hcptch')
+    public static function render($mustBeEmptyField = '_username')
     {
-        $now = time();
-        $name = substr(md5(rand(0, 1000000)), 0, 16);
+        $ts = time();
+        $random = str_random(16);
 
         // Generate the token
         $token = array(
-            'timestamp' => $now,
-            'session_id' => session_id(),
+            'timestamp' => $ts,
+            'session_id' => session()->getId(),
             'ip' => Request::ip(),
-            'user_agent' => $_SERVER['HTTP_USER_AGENT'],
-            'random_field_name' => $name
+            'user_agent' => Request::header('User-Agent'),
+            'random_field_name' => $random,
+            'must_be_empty' => $mustBeEmptyField
         );
 
         // Encrypt the token
         $token = Crypt::encrypt(serialize($token));
 
-        // put a random invisible style, to fool spambots a little bit more
-        $styles = ['position:absolute;left:-' . mt_rand(10000, 20000) . 'px;', 'display: none'];
-        $style = $styles[array_rand($styles)];
-
-        // build tags
-        $tags = '<input type="hidden" name="' . $formId . '[token]" value="' . $token . '" />' . PHP_EOL;
-        $tags .= '<span style="' . $style . '"><input type="text" name="' . $formId . '[name]" value=""/></span>' . PHP_EOL;
-        $tags .= '<input type="hidden" name="' . $formId . '[' . $name . ']" value="' . $now . '" />' . PHP_EOL;
-
-        echo $tags;
+        echo <<<HTML
+            <input type="hidden" name="_captcha" value="$token" />
+            <div style="position:fixed;top:0;left:0;transform:translateX(-100%)">
+                <label for="$mustBeEmptyField">Name</label>
+                <input type="text" name="$mustBeEmptyField" value=""/></div>
+            </div>
+            <input type="hidden" name="$random" value="$ts"/>
+HTML;
     }
 
     /**
-     * Check the hidden captcha's values
+     * Check the hidden captcha values
      *
-     * @param array $values Posted values
-     * @param integer $minLimit [optional] Submission minimum time limit in seconds (default = 0)
-     * @param integer $maxLimit [optional] Submission maximum time limit in seconds (default = 1200)
+     * @param Validator $validator
+     * @param string $attribute
+     * @param integer $minLimit
+     * @param integer $maxLimit
      * @return boolean
      */
-    public static function check($values, $minLimit = 0, $maxLimit = 1200, Validator $validator)
+    public static function check(Validator $validator, $minLimit = 0, $maxLimit = 1200)
     {
-        // Check post values
-        if ($values === null || !isset($values['token']) || !array_key_exists('name', $values)) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.novalues')]);
-            return false;
-        }
+        $formData = $validator->getData();
+        $result = true;
 
-        // Hidden field is set
-        if (!empty($values['name'])) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.autofill')]);
+        // Check post values
+        if (!isset($formData['_captcha'])) {
             return false;
         }
 
         // Get the token values
         try {
-            $token = Crypt::decrypt($values['token']);
+            $token = Crypt::decrypt($formData['_captcha']);
         } catch (\Exception $exception) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.token')]);
             return false;
         }
 
@@ -85,37 +72,37 @@ class HiddenCaptcha
 
         // Token is null or unserializable
         if (!$token || !is_array($token) || empty($token)) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.token')]);
+            return false;
+        }
+
+        // Hidden "must be empty" field check
+        if (!array_key_exists($token['must_be_empty'], $formData) || !empty($formData[$token['must_be_empty']])) {
             return false;
         }
 
         // Check time limits
         $now = time();
         if ($now - $token['timestamp'] < $minLimit || $now - $token['timestamp'] > $maxLimit) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.time_limit')]);
             return false;
         }
 
         // Check the random posted field
-        if (!isset($values[$token['random_field_name']])) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.random_field')]);
+        if (!isset($formData[$token['random_field_name']])) {
             return false;
         }
 
         // Check if the random field value is similar to the token value
-        $randomField = $values[$token['random_field_name']];
+        $randomField = $formData[$token['random_field_name']];
         if (!ctype_digit($randomField) || $token['timestamp'] != $randomField) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.random_field_value')]);
             return false;
         }
 
         // Check token values
         if (!isset($token['session_id'], $token['ip'], $token['user_agent']) &&
-            $token['session_id'] !== session_id &&
+            $token['session_id'] !== session()->getId() &&
             $token['ip'] !== Request::ip() &&
-            $token['user_agent'] !== $_SERVER['HTTP_USER_AGENT']
+            $token['user_agent'] !== Request::header('User-Agent')
         ) {
-            $validator->setCustomMessages(['hiddencaptcha' => trans('hiddencaptcha::error.invalid_token')]);
             return false;
         }
 
