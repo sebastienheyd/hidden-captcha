@@ -14,12 +14,29 @@
       "SebastienHeyd\\HiddenCaptcha\\": "src/"
     }
   },
+  "config": {
+    "preferred-install": "dist"
+  },
   "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php" : ">=5.6.0",
-    "illuminate/support": "^5.5"
+    "illuminate/support": "5.5.*",
+    "illuminate/view": "5.5.*",
+    "illuminate/filesystem": "5.5.*",
+    "illuminate/http": "5.5.*",
+    "illuminate/routing": "5.5.*",
+    "illuminate/validation": "5.5.*"
+  },
+  "require-dev": {
+    "graham-campbell/testbench": "^3.1|^4.0",
+    "mockery/mockery": "^0.9.4",
+    "phpunit/phpunit": "^4.8|^5.0|^6.0"
   },
   "extra": {
+    "branch-alias": {
+      "dev-master": "5.5.x-dev"
+    },
     "laravel": {
       "providers": [
         "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
