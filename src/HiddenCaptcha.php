@@ -34,9 +34,9 @@ class HiddenCaptcha
 
         echo <<<HTML
             <input type="hidden" name="_captcha" value="$token" />
-            <div style="position:fixed;top:0;left:0;transform:translateX(-100%)">
+            <div style="position:fixed;transform:translateX(-10000px)">
                 <label for="$mustBeEmptyField">Name</label>
-                <input type="text" name="$mustBeEmptyField" value=""/></div>
+                <input type="text" name="$mustBeEmptyField" value=""/>
             </div>
             <input type="hidden" name="$random" value="$ts"/>
 HTML;
@@ -46,7 +46,6 @@ HTML;
      * Check the hidden captcha values
      *
      * @param Validator $validator
-     * @param string $attribute
      * @param integer $minLimit
      * @param integer $maxLimit
      * @return boolean
@@ -54,7 +53,6 @@ HTML;
     public static function check(Validator $validator, $minLimit = 0, $maxLimit = 1200)
     {
         $formData = $validator->getData();
-        $result = true;
 
         // Check post values
         if (!isset($formData['_captcha'])) {

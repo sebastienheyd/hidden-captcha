@@ -28,6 +28,11 @@ No, this solution can be countered by retrieving data from fields by parsing HTM
 composer require sebastienheyd/hidden-captcha
 ```
 
+Extra steps for Laravel < 5.5 :
+
+- Add `SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider::class,` at the end of the `provider` array in `config/app.php`
+- Add `"HiddenCaptcha" => SebastienHeyd\HiddenCaptcha\Facades\HiddenCaptcha::class,` at the end of the `aliases` array in `config/app.php`
+
 ## Usage
 
 1. In your form, in the blade view :
