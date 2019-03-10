@@ -1,8 +1,8 @@
-<?php namespace SebastienHeyd\HiddenCaptcha\Facades;
+<?php namespace SebastienHeyd\HiddenCaptcha;
 
 use Illuminate\Support\Facades\Facade;
 
-class HiddenCaptcha extends Facade
+class HiddenCaptchaFacade extends Facade
 {
     /**
      * Get the registered name of the component.

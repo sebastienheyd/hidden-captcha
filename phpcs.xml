@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ruleset name="hidden-captcha">
+    <description/>
+    <arg name="colors"/>
+    <arg value="p"/>
+    <file>src</file>
+    <rule ref="PSR2" />
+    <exclude-pattern>*/src/views/*$</exclude-pattern>
+</ruleset>

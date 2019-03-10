@@ -55,7 +55,7 @@ By default, the time limits for submitting a form are 0 second minimum to 1200 s
 
 These limits can be changed by declaring them in the validation rule, for example:
 
-`$rules = ['captcha' => 'required|hiddencaptcha:5,2400'];`
+`$rules = ['captcha' => 'hiddencaptcha:5,2400'];`
 
 #### Change the name of the field that must be empty
 

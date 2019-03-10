@@ -14,10 +14,20 @@
       "SebastienHeyd\\HiddenCaptcha\\": "src/"
     }
   },
-  "minimum-stability": "dev",
+  "autoload-dev": {
+    "psr-4": {
+      "SebastienHeyd\\HiddenCaptcha\\Tests\\": "tests/"
+    }
+  },
   "require": {
     "php" : ">=5.6.0",
     "illuminate/support": "^5.2"
+  },
+  "require-dev": {
+    "php" : ">=7.1.3",
+    "phpunit/phpunit": "^7.0",
+    "squizlabs/php_codesniffer": "^3.0",
+    "orchestra/testbench": "^3.8"
   },
   "extra": {
     "laravel": {
@@ -25,8 +35,10 @@
         "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
       ],
       "aliases": {
-        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facades\\HiddenCaptcha"
+        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaFacade"
       }
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable" : true
 }
