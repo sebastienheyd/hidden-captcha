@@ -13,7 +13,7 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
     public function boot()
     {
         Blade::directive('hiddencaptcha', function ($mustBeEmptyField = '_username') {
-            return "<?php HiddenCaptcha::render($mustBeEmptyField); ?>";
+            return "<?= HiddenCaptcha::render($mustBeEmptyField); ?>";
         });
 
         $this->app['validator']->extendImplicit(
