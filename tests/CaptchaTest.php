@@ -1,11 +1,12 @@
-<?php namespace SebastienHeyd\HiddenCaptcha\Tests;
+<?php
 
-use HiddenCaptcha;
+namespace SebastienHeyd\HiddenCaptcha\Tests;
+
 use Crypt;
+use HiddenCaptcha;
 
 /**
- * Class CaptchaTest
- * @package SebastienHeyd\HiddenCaptcha\Tests
+ * Class CaptchaTest.
  *
  * @property \Illuminate\Validation\Validator $validator
  */
@@ -70,7 +71,7 @@ class CaptchaTest extends TestCase
             'ip'                => $ip,
             'user_agent'        => $userAgent,
             'random_field_name' => 'randomField',
-            'must_be_empty'     => '_username'
+            'must_be_empty'     => '_username',
         ];
 
         return Crypt::encrypt(serialize($token));

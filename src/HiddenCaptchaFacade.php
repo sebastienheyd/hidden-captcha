@@ -1,4 +1,6 @@
-<?php namespace SebastienHeyd\HiddenCaptcha;
+<?php
+
+namespace SebastienHeyd\HiddenCaptcha;
 
 use Illuminate\Support\Facades\Facade;
 

@@ -1,7 +1,9 @@
-<?php namespace SebastienHeyd\HiddenCaptcha;
+<?php
 
-use Illuminate\Support\ServiceProvider;
+namespace SebastienHeyd\HiddenCaptcha;
+
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\ServiceProvider;
 
 class HiddenCaptchaServiceProvider extends ServiceProvider
 {
@@ -23,6 +25,7 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
                 $maxLimit = (isset($parameters[1]) && is_numeric($parameters[1])) ? $parameters[1] : 1200;
                 if (!HiddenCaptcha::check($validator, $minLimit, $maxLimit)) {
                     $validator->setCustomMessages(['hiddencaptcha' => 'Captcha error']);
+
                     return false;
                 }
 

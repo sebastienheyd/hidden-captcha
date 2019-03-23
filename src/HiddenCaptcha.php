@@ -1,12 +1,14 @@
-<?php namespace SebastienHeyd\HiddenCaptcha;
+<?php
 
-use Illuminate\Validation\Validator;
+namespace SebastienHeyd\HiddenCaptcha;
+
 use Crypt;
+use Illuminate\Validation\Validator;
 
 class HiddenCaptcha
 {
     /**
-     * Set the hidden captcha tags to put in your form
+     * Set the hidden captcha tags to put in your form.
      *
      * @param string $mustBeEmptyField
      *
@@ -24,7 +26,7 @@ class HiddenCaptcha
             'ip'                => request()->ip(),
             'user_agent'        => request()->header('User-Agent'),
             'random_field_name' => $random,
-            'must_be_empty'     => $mustBeEmptyField
+            'must_be_empty'     => $mustBeEmptyField,
         ];
 
         // Encrypt the token
@@ -34,13 +36,13 @@ class HiddenCaptcha
     }
 
     /**
-     * Check the hidden captcha values
+     * Check the hidden captcha values.
      *
      * @param Validator $validator
-     * @param integer $minLimit
-     * @param integer $maxLimit
+     * @param int       $minLimit
+     * @param int       $maxLimit
      *
-     * @return boolean
+     * @return bool
      */
     public static function check(Validator $validator, $minLimit = 0, $maxLimit = 1200)
     {
