@@ -3,8 +3,8 @@
 namespace SebastienHeyd\HiddenCaptcha;
 
 use Crypt;
-use Illuminate\Validation\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Validator;
 
 class HiddenCaptcha
 {
@@ -81,7 +81,7 @@ class HiddenCaptcha
     }
 
     /**
-     * Get and check the token values
+     * Get and check the token values.
      *
      * @param string $captcha
      *
