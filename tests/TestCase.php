@@ -1,19 +1,21 @@
-<?php namespace SebastienHeyd\HiddenCaptcha\Tests;
+<?php
 
-use SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider;
+namespace SebastienHeyd\HiddenCaptcha\Tests;
+
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
     /**
-     * @param  \Illuminate\Foundation\Application $app
+     * @param \Illuminate\Foundation\Application $app
      *
      * @return array
      */
     protected function getPackageProviders($app)
     {
         return [
-            HiddenCaptchaServiceProvider::class
+            HiddenCaptchaServiceProvider::class,
         ];
     }
 
@@ -25,7 +27,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\HiddenCaptchaFacade::class
+            'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\HiddenCaptchaFacade::class,
         ];
     }
 
