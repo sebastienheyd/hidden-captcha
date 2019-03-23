@@ -4,6 +4,7 @@ namespace SebastienHeyd\HiddenCaptcha;
 
 use Crypt;
 use Illuminate\Validation\Validator;
+use Illuminate\Support\Str;
 
 class HiddenCaptcha
 {
@@ -17,7 +18,7 @@ class HiddenCaptcha
     public static function render($mustBeEmptyField = '_username')
     {
         $ts = time();
-        $random = str_random(16);
+        $random = Str::random(16);
 
         // Generate the token
         $token = [
@@ -49,21 +50,7 @@ class HiddenCaptcha
         $formData = $validator->getData();
 
         // Check post values
-        if (!isset($formData['_captcha'])) {
-            return false;
-        }
-
-        // Get the token values
-        try {
-            $token = Crypt::decrypt($formData['_captcha']);
-        } catch (\Exception $exception) {
-            return false;
-        }
-
-        $token = @unserialize($token);
-
-        // Token is null or unserializable
-        if (!$token || !is_array($token) || empty($token)) {
+        if (!isset($formData['_captcha']) || !($token = self::getToken($formData['_captcha']))) {
             return false;
         }
 
@@ -79,13 +66,40 @@ class HiddenCaptcha
         }
 
         // Check the random posted field
-        if (!isset($formData[$token['random_field_name']])) {
+        if (empty($formData[$token['random_field_name']])) {
             return false;
         }
 
         // Check if the random field value is similar to the token value
         $randomField = $formData[$token['random_field_name']];
         if (!ctype_digit($randomField) || $token['timestamp'] != $randomField) {
+            return false;
+        }
+
+        // Everything is ok, return true
+        return true;
+    }
+
+    /**
+     * Get and check the token values
+     *
+     * @param string $captcha
+     *
+     * @return string|bool
+     */
+    private static function getToken($captcha)
+    {
+        // Get the token values
+        try {
+            $token = Crypt::decrypt($captcha);
+        } catch (\Exception $exception) {
+            return false;
+        }
+
+        $token = @unserialize($token);
+
+        // Token is null or unserializable
+        if (!$token || !is_array($token) || empty($token)) {
             return false;
         }
 
@@ -100,7 +114,6 @@ class HiddenCaptcha
             return false;
         }
 
-        // Everything is ok, return true
-        return true;
+        return $token;
     }
 }
