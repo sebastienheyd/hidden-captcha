@@ -1,13 +1,13 @@
-# Fully hidden captcha for Laravel 5
+# Fully hidden captcha for Laravel 5/6
 
-![Laravel](https://img.shields.io/badge/For-Laravel%20%E2%89%A5%205.4-lightgrey.svg)
+![Laravel](https://img.shields.io/badge/For-Laravel%205/6-lightgrey.svg)
 [![Build Status](https://travis-ci.org/sebastienheyd/hidden-captcha.svg?branch=master)](https://travis-ci.org/sebastienheyd/hidden-captcha)
 [![StyleCI](https://github.styleci.io/repos/51009111/shield?branch=master)](https://github.styleci.io/repos/51009111)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastienheyd/hidden-captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sebastienheyd/hidden-captcha/?branch=master)
 ![Nb downloads](https://img.shields.io/packagist/dt/sebastienheyd/hidden-captcha.svg)
 ![License](https://img.shields.io/github/license/sebastienheyd/hidden-captcha.svg)
 
-Spam protection solution for Laravel 5.x. Based on several strategies to block the vast majority of spam bots, without 
+Spam protection solution for Laravel 5/6. Based on several strategies to block the vast majority of spam bots, without 
 interfering with the user experience.
 
 ## How does it work?
