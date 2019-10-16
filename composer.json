@@ -1,6 +1,6 @@
 {
   "name": "sebastienheyd/hidden-captcha",
-  "description": "Fully hidden captcha for Laravel 5",
+  "description": "Fully hidden captcha for Laravel 5/6",
   "keywords": [ "laravel", "captcha", "hidden", "invisible" ],
   "license": "MIT",
   "authors": [
