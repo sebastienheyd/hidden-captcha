@@ -14,48 +14,51 @@ class CaptchaTest extends TestCase
 {
     public function testHiddenCaptcha()
     {
-        $render = HiddenCaptcha::render();
-        $this->assertTrue(preg_match('#name="_captcha" value="(.*?)"#', $render, $m) == true);
-        $token = $m[1];
+        $this->app->instance('path.public', realpath(__DIR__.'/../src/public'));
 
-        $this->assertTrue(preg_match('#<input type="hidden" name="(.*?)" value="(.*?)" \/>$#', $render, $m) == true);
-        $random = $m[1];
-        $ts = $m[2];
+        $render = HiddenCaptcha::render();
+        $this->assertTrue(preg_match('#^<input type="hidden" name="_captcha" data-csrf="(.*?)" /><input type="hidden" name="(.*?)" />#', $render, $m) == true);
+
+        $csrf = $m[1];
+        $random = $m[2];
+        $response = $this->withHeaders([
+            'X-SIGNATURE' => hash('sha256', $random.$csrf.'hiddencaptcha')
+        ])->post('/captcha-token', ['name' => $random])->content();
+        $json = json_decode($response);
+        $ts = $json->ts;
+        $token = $json->token;
 
         // One field is missing
-        $this->assertFalse($this->check([$random => $ts, '_username' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token, '_username' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts]));
+        $this->assertFalse($this->check([$random => $ts]));
+        $this->assertFalse($this->check(['_captcha' => $token]));
 
         // Invalid value
-        $this->assertFalse($this->check(['_captcha'.'invalid' => $token, $random => $ts, '_username' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token.'invalid', $random => $ts, '_username' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token, $random.'invalid' => $ts, '_username' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts.'invalid', '_username' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts, '_username'.'invalid' => '']));
-        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts, '_username' => 'invalid']));
+        $this->assertFalse($this->check(['_captcha'.'invalid' => $token, $random => $ts]));
+        $this->assertFalse($this->check(['_captcha' => $token.'invalid', $random => $ts]));
+        $this->assertFalse($this->check(['_captcha' => $token, $random.'invalid' => $ts]));
+        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts.'invalid']));
 
         // Time limit
-        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts, '_username' => ''], ':5,60'));
+        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts], ':5,60'));
         sleep(2);
-        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts, '_username' => ''], ':0,1'));
+        $this->assertFalse($this->check(['_captcha' => $token, $random => $ts], ':0,1'));
 
         // Everything is ok
-        $this->assertTrue($this->check(['_captcha' => $token, $random => $ts, '_username' => '']));
+        $this->assertTrue($this->check(['_captcha' => $token, $random => $ts]));
 
         // Fake Token OK
         $this->ts = time();
         $token = $this->fakeToken('127.0.0.1', 'Symfony');
-        $this->assertTrue($this->check(['_captcha' => $token, 'randomField' => $this->ts, '_username' => '']));
+        $this->assertTrue($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
 
         // Invalid token values
         $token = $this->fakeToken('1.2.3.4', 'Symfony'); // Another IP
-        $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts, '_username' => '']));
+        $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
         $token = $this->fakeToken('127.0.0.1', 'Chrome'); // Another user agent
-        $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts, '_username' => '']));
+        $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
         $token = $this->fakeToken('127.0.0.1', 'Symfony'); // Another session id
         session()->regenerate(true);
-        $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts, '_username' => '']));
+        $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
     }
 
     private function check($post, $param = '')

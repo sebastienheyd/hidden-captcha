@@ -3,9 +3,9 @@
 namespace SebastienHeyd\HiddenCaptcha;
 
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-class HiddenCaptchaServiceProvider extends ServiceProvider
+class ServiceProvider extends BaseServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -14,8 +14,8 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::directive('hiddencaptcha', function ($mustBeEmptyField = '_username') {
-            return "<?= HiddenCaptcha::render($mustBeEmptyField); ?>";
+        Blade::directive('hiddencaptcha', function () {
+            return "<?= HiddenCaptcha::render(); ?>";
         });
 
         $this->app['validator']->extendImplicit(
@@ -34,7 +34,10 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
         );
 
         $this->loadViewsFrom(__DIR__.'/views', 'hiddenCaptcha');
-        $this->publishes([__DIR__.'/views' => resource_path('views/vendor/hiddenCaptcha')]);
+        $this->loadRoutesFrom(__DIR__.'/routes/hidden-captcha.php');
+
+        $this->publishes([__DIR__.'/public' => public_path()], 'public');
+        $this->publishes([__DIR__.'/config' => config_path()], 'config');
     }
 
     /**
@@ -44,6 +47,8 @@ class HiddenCaptchaServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(__DIR__.'/config/hidden_captcha.php', 'hidden_captcha');
+
         // Facade
         $this->app->bind('hiddencaptcha', 'SebastienHeyd\HiddenCaptcha\HiddenCaptcha');
     }

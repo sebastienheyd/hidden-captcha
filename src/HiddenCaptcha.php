@@ -11,41 +11,23 @@ class HiddenCaptcha
     /**
      * Set the hidden captcha tags to put in your form.
      *
-     * @param string $mustBeEmptyField
-     *
      * @return string
      */
-    public static function render($mustBeEmptyField = '_username')
+    public static function render()
     {
-        $ts = time();
-        $random = Str::random(16);
-
-        // Generate the token
-        $token = [
-            'timestamp'         => $ts,
-            'session_id'        => session()->getId(),
-            'ip'                => request()->ip(),
-            'user_agent'        => request()->header('User-Agent'),
-            'random_field_name' => $random,
-            'must_be_empty'     => $mustBeEmptyField,
-        ];
-
-        // Encrypt the token
-        $token = Crypt::encrypt(serialize($token));
-
-        return (string) view('hiddenCaptcha::captcha', compact('mustBeEmptyField', 'ts', 'random', 'token'));
+        return (string) view('hiddenCaptcha::captcha', ['random' => Str::random(16)]);
     }
 
     /**
      * Check the hidden captcha values.
      *
      * @param Validator $validator
-     * @param int       $minLimit
-     * @param int       $maxLimit
+     * @param int $minLimit
+     * @param int $maxLimit
      *
      * @return bool
      */
-    public static function check(Validator $validator, $minLimit = 0, $maxLimit = 1200)
+    public static function check(Validator $validator, $minLimit = null, $maxLimit = null)
     {
         $formData = $validator->getData();
 
@@ -54,14 +36,11 @@ class HiddenCaptcha
             return false;
         }
 
-        // Hidden "must be empty" field check
-        if (!array_key_exists($token['must_be_empty'], $formData) || !empty($formData[$token['must_be_empty']])) {
-            return false;
-        }
-
         // Check time limits
         $now = time();
-        if ($now - $token['timestamp'] < $minLimit || $now - $token['timestamp'] > $maxLimit) {
+        $min = $minLimit ?? config('hidden_captcha.min_submit_time');
+        $max = $maxLimit ?? config('hidden_captcha.max_submit_time');
+        if ($now - $token['timestamp'] < $min || $now - $token['timestamp'] > $max) {
             return false;
         }
 

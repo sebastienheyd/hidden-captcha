@@ -1,6 +1,5 @@
-<input type="hidden" name="_captcha" value="{{ $token }}" />
-<div style="position:fixed;transform:translateX(-10000px)">
-    <label for="{{ $mustBeEmptyField }}">Name</label>
-    <input type="text" name="{{ $mustBeEmptyField }}" value="" />
-</div>
-<input type="hidden" name="{{ $random }}" value="{{ $ts }}" />
+<input type="hidden" name="_captcha" data-csrf="{{ csrf_token() }}" /><input type="hidden" name="{{ $random }}" />
+@if(!defined('LOAD_HIDDEN_CAPTCHA'))
+    <script src="{{ mix('captcha.min.js', '/assets/vendor/hidden-captcha') }}"></script>
+    @php(define('LOAD_HIDDEN_CAPTCHA', true))
+@endif

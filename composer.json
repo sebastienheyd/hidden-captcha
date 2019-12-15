@@ -16,7 +16,8 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "SebastienHeyd\\HiddenCaptcha\\Tests\\": "tests/"
+      "SebastienHeyd\\HiddenCaptcha\\Tests\\": "tests/",
+      "App\\Http\\Controllers\\": "tests/"
     }
   },
   "require": {
@@ -32,10 +33,10 @@
   "extra": {
     "laravel": {
       "providers": [
-        "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
+        "SebastienHeyd\\HiddenCaptcha\\ServiceProvider"
       ],
       "aliases": {
-        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaFacade"
+        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facade"
       }
     }
   },

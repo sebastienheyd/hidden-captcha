@@ -6,4 +6,6 @@
     <file>src</file>
     <rule ref="PSR2" />
     <exclude-pattern>*/src/views/*$</exclude-pattern>
+    <exclude-pattern>*/src/node_modules/*$</exclude-pattern>
+    <exclude-pattern>*/src/public/*$</exclude-pattern>
 </ruleset>

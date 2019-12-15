@@ -3,7 +3,7 @@
 namespace SebastienHeyd\HiddenCaptcha\Tests;
 
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider;
+use SebastienHeyd\HiddenCaptcha\ServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -15,7 +15,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            HiddenCaptchaServiceProvider::class,
+            ServiceProvider::class,
         ];
     }
 
@@ -27,7 +27,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\HiddenCaptchaFacade::class,
+            'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\Facade::class,
         ];
     }
 
@@ -35,5 +35,6 @@ abstract class TestCase extends OrchestraTestCase
     {
         parent::setUp();
         $this->validator = $this->app['validator'];
+        \Session::start();
     }
 }
