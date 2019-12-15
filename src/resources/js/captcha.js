@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let csrf = captcha.getAttribute('data-csrf');
         let random = captcha.nextElementSibling.getAttribute('name');
 
-        sha256(random+csrf+'hiddencaptcha').then(function(hash) {
+        sha256(random+csrf+'hiddencaptcha').then(function (hash) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', "/captcha-token");
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -26,7 +26,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-async function sha256(message) {
+async function sha256(message)
+{
     const msgBuffer = new TextEncoder().encode(message);
     const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
