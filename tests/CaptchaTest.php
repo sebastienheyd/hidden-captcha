@@ -22,7 +22,7 @@ class CaptchaTest extends TestCase
         $csrf = $m[1];
         $random = $m[2];
         $response = $this->withHeaders([
-            'X-SIGNATURE' => hash('sha256', $random.$csrf.'hiddencaptcha')
+            'X-SIGNATURE' => hash('sha256', $random.$csrf.'hiddencaptcha'),
         ])->post('/captcha-token', ['name' => $random])->content();
         $json = json_decode($response);
         $ts = $json->ts;
