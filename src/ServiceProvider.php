@@ -15,7 +15,7 @@ class ServiceProvider extends BaseServiceProvider
     public function boot()
     {
         Blade::directive('hiddencaptcha', function () {
-            return "<?= HiddenCaptcha::render(); ?>";
+            return '<?= HiddenCaptcha::render(); ?>';
         });
 
         $this->app['validator']->extendImplicit(

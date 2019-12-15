@@ -3,9 +3,8 @@
 namespace SebastienHeyd\HiddenCaptcha\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Str;
 use Crypt;
+use Illuminate\Http\Request;
 
 class HiddenCaptchaController extends Controller
 {
@@ -13,15 +12,15 @@ class HiddenCaptchaController extends Controller
     {
         $ts = time();
 
-        if(!($name = $request->post('name'))) {
+        if (!($name = $request->post('name'))) {
             abort(503);
         }
 
-        if(!($signature = request()->header('X-SIGNATURE'))) {
+        if (!($signature = request()->header('X-SIGNATURE'))) {
             abort(503);
         }
 
-        if(hash('sha256', $name.csrf_token().'hiddencaptcha') !== $signature) {
+        if (hash('sha256', $name.csrf_token().'hiddencaptcha') !== $signature) {
             abort(503);
         }
 

@@ -22,8 +22,8 @@ class HiddenCaptcha
      * Check the hidden captcha values.
      *
      * @param Validator $validator
-     * @param int $minLimit
-     * @param int $maxLimit
+     * @param int       $minLimit
+     * @param int       $maxLimit
      *
      * @return bool
      */
