@@ -30,11 +30,4 @@ abstract class TestCase extends OrchestraTestCase
             'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\Facade::class,
         ];
     }
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->validator = $this->app['validator'];
-        \Session::start();
-    }
 }

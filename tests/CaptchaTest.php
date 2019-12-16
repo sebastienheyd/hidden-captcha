@@ -4,6 +4,8 @@ namespace SebastienHeyd\HiddenCaptcha\Tests;
 
 use Crypt;
 use HiddenCaptcha;
+use Session;
+use Validator;
 
 /**
  * Class CaptchaTest.
@@ -14,6 +16,7 @@ class CaptchaTest extends TestCase
 {
     public function testHiddenCaptcha()
     {
+        Session::start();
         $this->app->instance('path.public', realpath(__DIR__.'/../src/public'));
 
         $render = HiddenCaptcha::render();
@@ -63,7 +66,7 @@ class CaptchaTest extends TestCase
 
     private function check($post, $param = '')
     {
-        return $this->validator->make($post, ['captcha' => 'hiddencaptcha'.$param])->passes();
+        return Validator::make($post, ['captcha' => 'hiddencaptcha'.$param])->passes();
     }
 
     private function fakeToken($ip, $userAgent)
