@@ -26,6 +26,12 @@ The token is retrieved via an ajax call signed with sha256.
 composer require sebastienheyd/hidden-captcha
 ```
 
+Publish public assets :
+
+```
+php artisan vendor:publish --provider="SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider" --tag=public
+```
+
 Extra steps for Laravel < 5.5 :
 
 - Add `SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider::class,` at the end of the `provider` array in 
@@ -35,9 +41,9 @@ in `config/app.php`
 
 ## Usage
 
-In your form, in the blade view :
+In your forms, in the blade view :
 
-```
+```blade
 @hiddencaptcha
 ```
 
@@ -56,3 +62,26 @@ that, hiddencaptcha will not validate the form.
 These limits can be changed by declaring them in the validation rule, for example:
 
 `$rules = ['captcha' => 'hiddencaptcha:5,2400'];`
+
+## Package update
+
+Hidden-captcha comes with a JS who must be publish. Since you typically will need to overwrite the assets
+every time the package is updated, you may use the ```--force``` flag :
+
+```
+php artisan vendor:publish --provider="SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider" --tag=public --force
+```
+
+To auto update assets each time package is updated, you can add this command to `post-autoload-dump` into the 
+file `composer.json` at the root of your project.
+ 
+
+```json
+{
+    "scripts": {
+        "post-autoload-dump": [
+            "@php artisan vendor:publish --provider=\"Sebastienheyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider\" --tag=public --force -q",
+        ]
+    }
+}
+```
