@@ -37,7 +37,7 @@
         "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
       ],
       "aliases": {
-        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facade"
+        "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facades\\HiddenCaptcha"
       }
     }
   },
