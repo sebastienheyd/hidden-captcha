@@ -55,7 +55,7 @@ class CaptchaTest extends TestCase
         // Fake Token OK
         $this->ts = time();
         $ua = request()->header('User-Agent');
-        
+
         $token = $this->fakeToken('127.0.0.1', $ua);
         $this->assertTrue($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
 
