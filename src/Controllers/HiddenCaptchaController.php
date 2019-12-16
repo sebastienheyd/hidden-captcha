@@ -12,18 +12,17 @@ class HiddenCaptchaController extends Controller
     {
         $ts = time();
 
-        if (!($name = $request->post('name'))) {
+        if (!($name = $request->input('name'))) {
             abort(503);
         }
 
-        if (!($signature = request()->header('X-SIGNATURE'))) {
+        if (!($signature = request()->header('x-signature'))) {
             abort(503);
         }
 
         if (hash('sha256', $name.csrf_token().'hiddencaptcha') !== $signature) {
             abort(503);
         }
-
         // Generate the token
         $token = [
             'timestamp'         => $ts,

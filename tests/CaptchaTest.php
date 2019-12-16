@@ -23,12 +23,13 @@ class CaptchaTest extends TestCase
 
         $render = HiddenCaptcha::render();
         $this->assertTrue(preg_match('#^<input type="hidden" name="_captcha" data-csrf="(.*?)" /><input type="hidden" name="(.*?)" />#', $render, $m) == true);
-
         $csrf = $m[1];
         $random = $m[2];
-        $response = $this->withHeaders([
-            'X-SIGNATURE' => hash('sha256', $random.$csrf.'hiddencaptcha'),
-        ])->post('/captcha-token', ['name' => $random])->content();
+
+        $response = $this->post('/captcha-token', ['name' => $random], [
+                'X-SIGNATURE' => hash('sha256', $random.$csrf.'hiddencaptcha'),
+        ])->content();
+
         $json = json_decode($response);
         $ts = $json->ts;
         $token = $json->token;
@@ -53,15 +54,17 @@ class CaptchaTest extends TestCase
 
         // Fake Token OK
         $this->ts = time();
-        $token = $this->fakeToken('127.0.0.1', 'Symfony');
+        $ua = request()->header('User-Agent');
+        
+        $token = $this->fakeToken('127.0.0.1', $ua);
         $this->assertTrue($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
 
         // Invalid token values
-        $token = $this->fakeToken('1.2.3.4', 'Symfony'); // Another IP
+        $token = $this->fakeToken('1.2.3.4', $ua); // Another IP
         $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
         $token = $this->fakeToken('127.0.0.1', 'Chrome'); // Another user agent
         $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
-        $token = $this->fakeToken('127.0.0.1', 'Symfony'); // Another session id
+        $token = $this->fakeToken('127.0.0.1', $ua); // Another session id
         session()->regenerate(true);
         $this->assertFalse($this->check(['_captcha' => $token, 'randomField' => $this->ts]));
     }

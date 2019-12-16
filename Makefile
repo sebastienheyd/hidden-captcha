@@ -11,7 +11,7 @@ $(COMPOSER):
 	chmod +x composer.phar
 
 vendor: $(COMPOSER) composer.json
-	$(COMPOSER) update
+	COMPOSER_MEMORY_LIMIT=-1 $(COMPOSER) update
 
 cs: vendor ## Check for coding standards
 	php vendor/bin/phpcs
