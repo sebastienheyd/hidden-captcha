@@ -2,7 +2,7 @@
 
 namespace SebastienHeyd\HiddenCaptcha\Facades;
 
-use Illuminate\Support\Facades\Facade
+use Illuminate\Support\Facades\Facade;
 
 class HiddenCaptcha extends Facade
 {

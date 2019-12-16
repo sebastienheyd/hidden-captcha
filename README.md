@@ -36,7 +36,7 @@ Extra steps for Laravel < 5.5 :
 
 - Add `SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider::class,` at the end of the `provider` array in 
 `config/app.php`
-- Add `"HiddenCaptcha" => SebastienHeyd\HiddenCaptcha\HiddenCaptchaFacade::class,` at the end of the `aliases` array 
+- Add `"HiddenCaptcha" => SebastienHeyd\HiddenCaptcha\Facades\HiddenCaptcha::class,` at the end of the `aliases` array 
 in `config/app.php`
 
 ## Usage
