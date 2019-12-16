@@ -38,8 +38,8 @@ class HiddenCaptcha
 
         // Check time limits
         $now = time();
-        $min = $minLimit ?? config('hidden_captcha.min_submit_time');
-        $max = $maxLimit ?? config('hidden_captcha.max_submit_time');
+        $min = $minLimit ? $minLimit : config('hidden_captcha.min_submit_time');
+        $max = $maxLimit ? $maxLimit :  config('hidden_captcha.max_submit_time');
         if ($now - $token['timestamp'] < $min || $now - $token['timestamp'] > $max) {
             return false;
         }

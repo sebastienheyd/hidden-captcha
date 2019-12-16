@@ -14,6 +14,8 @@ use Validator;
  */
 class CaptchaTest extends TestCase
 {
+    private $ts;
+
     public function testHiddenCaptcha()
     {
         Session::start();
