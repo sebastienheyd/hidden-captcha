@@ -22,7 +22,7 @@
   },
   "require": {
     "php" : ">=7.1",
-    "laravel/framework": "^5.6|^6.0"
+    "laravel/framework": "^5.4|^6.0"
   },
   "require-dev": {
     "php" : ">=7.1",
@@ -33,7 +33,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "SebastienHeyd\\HiddenCaptcha\\ServiceProvider"
+        "SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider"
       ],
       "aliases": {
         "HiddenCaptcha": "SebastienHeyd\\HiddenCaptcha\\Facade"

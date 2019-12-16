@@ -3,7 +3,7 @@
 namespace SebastienHeyd\HiddenCaptcha\Tests;
 
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
-use SebastienHeyd\HiddenCaptcha\ServiceProvider;
+use SebastienHeyd\HiddenCaptcha\HiddenCaptchaServiceProvider;
 
 abstract class TestCase extends OrchestraTestCase
 {
@@ -15,7 +15,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app)
     {
         return [
-            ServiceProvider::class,
+            HiddenCaptchaServiceProvider::class,
         ];
     }
 

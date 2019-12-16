@@ -5,7 +5,7 @@ namespace SebastienHeyd\HiddenCaptcha;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
-class ServiceProvider extends BaseServiceProvider
+class HiddenCaptchaServiceProvider extends BaseServiceProvider
 {
     /**
      * Bootstrap the application services.
