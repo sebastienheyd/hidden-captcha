@@ -20,9 +20,12 @@ class HiddenCaptchaController extends Controller
             abort(503);
         }
 
-        if (hash('sha256', $name.csrf_token().'hiddencaptcha') !== $signature) {
+        $mix = mix('captcha.min.js', '/assets/vendor/hidden-captcha');
+
+        if (hash('sha256', $name.csrf_token().$mix.'hiddencaptcha') !== $signature) {
             abort(503);
         }
+
         // Generate the token
         $token = [
             'timestamp'         => $ts,

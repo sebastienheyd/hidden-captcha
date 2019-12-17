@@ -1,17 +1,22 @@
-document.addEventListener('DOMContentLoaded', function () {
+window.hiddenCaptcha = function () {
     let captchas = document.querySelectorAll('input[name="_captcha"');
 
-    captchas.forEach(function (captcha) {
+    for (let i = 0; i < captchas.length; i++) {
+        let captcha = captchas[i];
+        if (captcha.getAttribute('value') !== null) {
+            continue;
+        }
+
         let csrf = captcha.getAttribute('data-csrf');
         let random = captcha.nextElementSibling.getAttribute('name');
+        let src = document.getElementById('captcha-script').getAttribute('src');
 
-        sha256(random+csrf+'hiddencaptcha').then(function (hash) {
+        sha256(random + csrf + src + 'hiddencaptcha').then(function (hash) {
             var xhr = new XMLHttpRequest();
             xhr.open('POST', "/captcha-token");
             xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
             xhr.setRequestHeader("X-CSRF-TOKEN", csrf);
             xhr.setRequestHeader("X-SIGNATURE", hash);
-
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
                     let json = JSON.parse(xhr.responseText);
@@ -20,11 +25,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             };
 
-            xhr.send('name='+random);
+            xhr.send('name=' + random);
         })
+    }
+}
 
-    });
-});
+// Fix for MS Edge
+if (typeof TextEncoder === 'undefined') {
+    var TextEncoder = function TextEncoder()
+    {}
+
+    TextEncoder.prototype.encode = function (s) {
+        const e = new Uint8Array(s.length);
+
+        for (let i = 0; i < s.length; i += 1) {
+            e[i] = s.charCodeAt(i);
+        }
+
+        return e;
+    }
+}
 
 async function sha256(message)
 {
@@ -34,3 +54,5 @@ async function sha256(message)
     const hashHex = hashArray.map(b => ('00' + b.toString(16)).slice(-2)).join('');
     return hashHex;
 }
+
+window.hiddenCaptcha();

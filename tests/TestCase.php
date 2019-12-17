@@ -27,7 +27,7 @@ abstract class TestCase extends OrchestraTestCase
     protected function getPackageAliases($app)
     {
         return [
-            'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\Facade::class,
+            'HiddenCaptcha' => \SebastienHeyd\HiddenCaptcha\Facades\HiddenCaptcha::class,
         ];
     }
 }

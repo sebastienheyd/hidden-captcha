@@ -26,8 +26,10 @@ class CaptchaTest extends TestCase
         $csrf = $m[1];
         $random = $m[2];
 
+        $mix = mix('captcha.min.js', '/assets/vendor/hidden-captcha');
+
         $response = $this->post('/captcha-token', ['name' => $random], [
-                'X-SIGNATURE' => hash('sha256', $random.$csrf.'hiddencaptcha'),
+                'X-SIGNATURE' => hash('sha256', $random.$csrf.$mix.'hiddencaptcha'),
         ])->content();
 
         $json = json_decode($response);
