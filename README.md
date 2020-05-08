@@ -80,7 +80,7 @@ file `composer.json` at the root of your project.
 {
     "scripts": {
         "post-autoload-dump": [
-            "@php artisan vendor:publish --provider=\"Sebastienheyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider\" --tag=public --force -q",
+            "@php artisan vendor:publish --provider=\"SebastienHeyd\\HiddenCaptcha\\HiddenCaptchaServiceProvider\" --tag=public --force -q",
         ]
     }
 }
