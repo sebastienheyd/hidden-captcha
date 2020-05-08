@@ -22,14 +22,15 @@ class CaptchaTest extends TestCase
         $this->app->instance('path.public', realpath(__DIR__.'/../src/public'));
 
         $render = HiddenCaptcha::render();
-        $this->assertTrue(preg_match('#^<input type="hidden" name="_captcha" data-csrf="(.*?)" /><input type="hidden" name="(.*?)" />#', $render, $m) == true);
+        $regex = '#^<input type="hidden" name="_captcha" data-csrf="(.*?)" /><input type="hidden" name="(.*?)" />#';
+        $this->assertTrue(preg_match($regex, $render, $m) == true);
         $csrf = $m[1];
         $random = $m[2];
 
         $mix = mix('captcha.min.js', '/assets/vendor/hidden-captcha');
 
         $response = $this->post('/captcha-token', ['name' => $random], [
-                'X-SIGNATURE' => hash('sha256', $random.$csrf.$mix.'hiddencaptcha'),
+            'X-SIGNATURE' => hash('sha256', $random.$csrf.$mix.'hiddencaptcha'),
         ])->content();
 
         $json = json_decode($response);
