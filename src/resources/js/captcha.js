@@ -1,4 +1,4 @@
-window.hiddenCaptcha = function () {
+window.hdCptch = function () {
     let captchas = document.querySelectorAll('input[name="_captcha"');
 
     for (let i = 0; i < captchas.length; i++) {
@@ -9,7 +9,7 @@ window.hiddenCaptcha = function () {
 
         let csrf = captcha.getAttribute('data-csrf');
         let random = captcha.nextElementSibling.getAttribute('name');
-        let src = document.getElementById('captcha-script').getAttribute('src');
+        let src = document.getElementById('cptch-js').getAttribute('src');
 
         sha256(random + csrf + src + 'hiddencaptcha').then(function (hash) {
             var xhr = new XMLHttpRequest();
@@ -55,4 +55,4 @@ async function sha256(message)
     return hashHex;
 }
 
-window.hiddenCaptcha();
+window.hdCptch();

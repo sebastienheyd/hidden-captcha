@@ -1,6 +1,6 @@
-# Fully hidden captcha for Laravel 5/6
+# Fully hidden captcha for Laravel 5 &rarr; 7
 
-![Laravel](https://img.shields.io/badge/For-Laravel%205/6-lightgrey.svg)
+![Laravel](https://img.shields.io/badge/For-Laravel%205&rarr;7-lightgrey.svg)
 [![Build Status](https://travis-ci.org/sebastienheyd/hidden-captcha.svg?branch=master)](https://travis-ci.org/sebastienheyd/hidden-captcha)
 [![StyleCI](https://github.styleci.io/repos/51009111/shield?branch=master)](https://github.styleci.io/repos/51009111)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastienheyd/hidden-captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sebastienheyd/hidden-captcha/?branch=master)

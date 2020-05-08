@@ -4,8 +4,8 @@ let JavaScriptObfuscator = require('webpack-obfuscator');
 
 mix.webpackConfig({
     plugins: [
-        new Clean(['public'], {verbose: false}),
-        new JavaScriptObfuscator({rotateUnicodeArray: true})
+        //new Clean(['public'], {verbose: false}),
+        //new JavaScriptObfuscator({rotateUnicodeArray: true})
     ]
 })
     .setPublicPath("public/assets/vendor/hidden-captcha")
