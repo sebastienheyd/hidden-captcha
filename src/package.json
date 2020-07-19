@@ -14,7 +14,7 @@
     "clean-webpack-plugin": "^1.0.1",
     "cross-env": "^5.2.1",
     "laravel-mix": "^5.0.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "webpack-obfuscator": "^0.28.0"
   },
   "dependencies": {}
