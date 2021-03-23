@@ -1,6 +1,6 @@
 {
   "name": "sebastienheyd/hidden-captcha",
-  "description": "Fully hidden captcha for Laravel 5/6/7",
+  "description": "Fully hidden captcha for Laravel without reCaptcha",
   "keywords": [ "laravel", "captcha", "hidden", "invisible" ],
   "license": "MIT",
   "authors": [
@@ -23,7 +23,7 @@
   "require": {
     "php" : ">=5.6.4",
     "ext-json": "*",
-    "laravel/framework": "^5.4|^6.0|^7.0"
+    "laravel/framework": "^5.4|^6.0|^7.0|^8.0"
   },
   "require-dev": {
     "php" : ">=5.6.4",
