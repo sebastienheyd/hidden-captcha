@@ -23,7 +23,7 @@ The token is retrieved via an ajax call signed with sha256.
 
 ## Installation
 
-```json
+```
 composer require sebastienheyd/hidden-captcha
 ```
 
