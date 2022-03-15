@@ -1,14 +1,10 @@
-let mix = require('laravel-mix');
-let Clean = require('clean-webpack-plugin');
-let JavaScriptObfuscator = require('webpack-obfuscator');
+const mix = require('laravel-mix');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+require('laravel-mix-obfuscator');
 
-mix.webpackConfig({
-    plugins: [
-        //new Clean(['public'], {verbose: false}),
-        //new JavaScriptObfuscator({rotateUnicodeArray: true})
-    ]
-})
+mix.webpackConfig({plugins: [new CleanWebpackPlugin()],stats:'errors-only'})
     .setPublicPath("public/assets/vendor/hidden-captcha")
-    .setResourceRoot('/');
+    .setResourceRoot('/')
+    .version();
 
-mix.js('resources/js/captcha.js', 'public/assets/vendor/hidden-captcha/captcha.min.js').version();
+mix.js('resources/js/captcha.js', 'public/assets/vendor/hidden-captcha/captcha.min.js').obfuscator();

@@ -26,3 +26,4 @@ clean: ## Remove files needed for tests
 	rm -rf ./vendor
 	rm -f ./composer.phar
 	rm -f ./composer.lock
+	rm -f .phpunit.result.cache
