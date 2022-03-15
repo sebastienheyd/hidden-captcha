@@ -36,7 +36,7 @@ class HiddenCaptchaServiceProvider extends BaseServiceProvider
         $this->loadViewsFrom(__DIR__.'/views', 'hiddenCaptcha');
         $this->loadRoutesFrom(__DIR__.'/routes/hidden-captcha.php');
 
-        $this->publishes([__DIR__.'/public' => public_path()], ['public', 'laravel-assets']);
+        $this->publishes([__DIR__.'/public' => public_path()], 'laravel-assets');
         $this->publishes([__DIR__.'/config' => config_path()], 'captcha-config');
     }
 
