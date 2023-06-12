@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/sebastienheyd/hidden-captcha.svg?branch=master)](https://travis-ci.org/sebastienheyd/hidden-captcha)
 [![StyleCI](https://github.styleci.io/repos/51009111/shield?branch=master)](https://github.styleci.io/repos/51009111)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/sebastienheyd/hidden-captcha/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/sebastienheyd/hidden-captcha/?branch=master)
-[![Laravel](https://img.shields.io/badge/Laravel%20%3E%3D%205.4?logo=Laravel&style=flat-square)](https://laravel.com/)
+[![Laravel](https://img.shields.io/badge/Laravel-%3E=5.4-green?logo=Laravel&style=flat-square)](https://laravel.com/)
 [![Nb downloads](https://img.shields.io/packagist/dt/sebastienheyd/hidden-captcha.svg)](https://packagist.org/packages/sebastienheyd/hidden-captcha)
 [![MIT License](https://img.shields.io/github/license/sebastienheyd/hidden-captcha?style=flat-square)](LICENSE)
 
